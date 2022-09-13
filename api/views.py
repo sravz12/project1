@@ -1,17 +1,88 @@
 from django.shortcuts import render
-
-# Create your views here.
+#
+# # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-class ProductView(APIView):
-    def get(self,request,*args,**kwargs):
-        return Response({"msg":"inside products get"})
-class MorningView(APIView):
-    def get(self,request,*args,**kwargs):
-        return Response({"msg":"GOOD MORNING"})
-class AddView(APIView):
-    def get(self,request,*args,**kwargs):
-        A=int(input("first num"))
-        B=int(input("second num"))
-        res=A+B
-        return Response({"msg":res})
+# class ProductView(APIView):
+#     def get(self,request,*args,**kwargs):
+#         return Response({"msg":"inside products get"})
+# class MorningView(APIView):
+#     def get(self,request,*args,**kwargs):
+#         return Response({"msg":"GOOD MORNING"})
+# class AddView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         n1=request.data
+#
+#         res=A+B
+#         return Response({"msg":res})
+# class MulView(APIView):
+#     def get(self,request,*args,**kwargs):
+#         A=int(input("num1"))
+#         B=int(input("num2"))
+#         res=A*B
+#         return Response({"msg":res})
+
+class CubeView(APIView):
+    def post(self,request,*args,**kwargs):
+        n=int(request.data.get("num1"))
+        res=n**3
+        return Response({"result":res})
+class NumcheckView(APIView):
+    def post(self,request,*args,**kwargs):
+        n=int(request.data.get("num1"))
+        res=""
+        if n%2==0:
+            res="num is even"
+        else:
+            res="num is odd"
+        return Response({"result":res})
+class FactView(APIView):
+    def post(self,request,*args,**kwargs):
+        n=int(request.data.get("num1"))
+        res=1
+        for i in range(1,n+1):
+            res=res*i
+        return Response({"result":res})
+class WordcountView(APIView):
+    def post(self,request,*args,**kwargs):
+        txt=request.data.get("txt")
+        words=txt.split(" ")
+        wc={}
+        for w in words:
+            if w in wc:
+                wc[w]+=1
+            else:
+                wc[w]=1
+        return Response({"count":wc})
+class ArmstrongView(APIView):
+    def post(self,request,*args,**kwargs):
+        n=int(request.data.get("n"))
+        count=0
+        s=0
+        num=num1=n
+        res=""
+        while n>0:
+            d=n%10
+            count=count+1
+            n=n//10
+        while num>0:
+            d=n%10
+            s=s+d**count
+            n=num//10
+        if num1==s:
+            res="arm"
+        else:
+            res='not armstrong'
+        return Response({"result":res})
+class PaliandromeView(APIView):
+    def post(self,request,*args,**kwargs):
+        s=request.data.get("txt")
+        s1=s[::-1]
+        res=''
+        if s1 == s:
+            res='it is palindrome'
+        else:
+            res='not palindrome'
+        return Response({"result":res})
+
+
