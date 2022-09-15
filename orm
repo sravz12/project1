@@ -1,0 +1,39 @@
+from django.db import models
+
+class Books(models.Model):
+    name=models.CharField(max_length=100)
+    author=models.CharField(max_length=100)
+    price=models.PositiveIntegerField()
+    publisher=models.CharField(max_length=100)
+    qty=models.PositiveIntegerField(default=1)
+
+django orm(object relational mapping)
+
+orm query for creating an object
+--------------------------------
+
+Modelname.objects.create(Field1="value",Field2="value"....)
+
+Books.objects.create(name="randamoozham",author="mt",price=300,publisher="abc",qty=30)
+
+Books.objects.create(name="Aarachar",author="meera",price=200,publisher="bcc",qty=20)
+
+fetching all
+-----------
+var=Modelname.objects.all()
+
+fetching a specific one
+---------------------
+data=Modelname.objects.get(id=2)
+
+filter queries
+--------------
+data=Modelname.objects.filter(price__lt=500)
+data=Modelname.object.filter(qty__gt=30)
+
+exlude
+------
+data=Books.objects.all().exclude(price=300)
+
+
+
