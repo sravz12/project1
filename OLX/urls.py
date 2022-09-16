@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 # from api.views import ProductView,MorningView,AddView,MulView
-from api.views import CubeView,NumcheckView,FactView,WordcountView,ArmstrongView,PaliandromeView
+from api.views import CubeView,NumcheckView,FactView,WordcountView,ArmstrongView,PaliandromeView,ProductsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +25,8 @@ urlpatterns = [
     path('fact',FactView.as_view()),
     path('word',WordcountView.as_view()),
     path('armstrong',ArmstrongView.as_view()),
-    path('paliandrome',PaliandromeView.as_view())
+    path('paliandrome',PaliandromeView.as_view()),
+    path('products',ProductsView.as_view())
 
     # path("products",ProductView.as_view()),
     # path("morning",MorningView.as_view()),

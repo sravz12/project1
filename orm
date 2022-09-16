@@ -25,15 +25,23 @@ var=Modelname.objects.all()
 fetching a specific one
 ---------------------
 data=Modelname.objects.get(id=2)
+data.name---> name ariyaaan
+data.color---> color ariyaaan
 
 filter queries
 --------------
 data=Modelname.objects.filter(price__lt=500)
 data=Modelname.object.filter(qty__gt=30)
 
-exlude
+exclude
 ------
 data=Books.objects.all().exclude(price=300)
+
+delete
+------
+
+
+
 
 
 

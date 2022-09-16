@@ -3,6 +3,8 @@ from django.shortcuts import render
 # # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from api.models import Books
+from api.serializers import BookSerializer
 # class ProductView(APIView):
 #     def get(self,request,*args,**kwargs):
 #         return Response({"msg":"inside products get"})
@@ -84,5 +86,20 @@ class PaliandromeView(APIView):
         else:
             res='not palindrome'
         return Response({"result":res})
+
+class ProductsView(APIView):
+    def get(self,request,*args,**kwargs):
+        qs=Books.objects.all()
+        serializer=BookSerializer(qs,many=True)
+        return Response(data=serializer.data)
+
+
+    def post(self,request,*args,**kwargs):
+        bname=request.data.get("name")
+        bauthor=request.data.get("author")
+        bprice=request.data.get("price")
+        bpublisher=request.data.get("publisher")
+        Books.objects.create(name=bname,author=bauthor,price=bprice,publisher=bpublisher)
+        return Response(data="created")
 
 
