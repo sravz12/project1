@@ -23,69 +23,69 @@ from api.serializers import BookSerializer
 #         B=int(input("num2"))
 #         res=A*B
 #         return Response({"msg":res})
-
-class CubeView(APIView):
-    def post(self,request,*args,**kwargs):
-        n=int(request.data.get("num1"))
-        res=n**3
-        return Response({"result":res})
-class NumcheckView(APIView):
-    def post(self,request,*args,**kwargs):
-        n=int(request.data.get("num1"))
-        res=""
-        if n%2==0:
-            res="num is even"
-        else:
-            res="num is odd"
-        return Response({"result":res})
-class FactView(APIView):
-    def post(self,request,*args,**kwargs):
-        n=int(request.data.get("num1"))
-        res=1
-        for i in range(1,n+1):
-            res=res*i
-        return Response({"result":res})
-class WordcountView(APIView):
-    def post(self,request,*args,**kwargs):
-        txt=request.data.get("txt")
-        words=txt.split(" ")
-        wc={}
-        for w in words:
-            if w in wc:
-                wc[w]+=1
-            else:
-                wc[w]=1
-        return Response({"count":wc})
-class ArmstrongView(APIView):
-    def post(self,request,*args,**kwargs):
-        n=int(request.data.get("n"))
-        count=0
-        s=0
-        num=num1=n
-        res=""
-        while n>0:
-            d=n%10
-            count=count+1
-            n=n//10
-        while num>0:
-            d=n%10
-            s=s+d**count
-            n=num//10
-        if num1==s:
-            res="arm"
-        else:
-            res='not armstrong'
-        return Response({"result":res})
-class PaliandromeView(APIView):
-    def post(self,request,*args,**kwargs):
-        s=request.data.get("txt")
-        s1=s[::-1]
-        res=''
-        if s1 == s:
-            res='it is palindrome'
-        else:
-            res='not palindrome'
-        return Response({"result":res})
+#
+# class CubeView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         n=int(request.data.get("num1"))
+#         res=n**3
+#         return Response({"result":res})
+# class NumcheckView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         n=int(request.data.get("num1"))
+#         res=""
+#         if n%2==0:
+#             res="num is even"
+#         else:
+#             res="num is odd"
+#         return Response({"result":res})
+# class FactView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         n=int(request.data.get("num1"))
+#         res=1
+#         for i in range(1,n+1):
+#             res=res*i
+#         return Response({"result":res})
+# class WordcountView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         txt=request.data.get("txt")
+#         words=txt.split(" ")
+#         wc={}
+#         for w in words:
+#             if w in wc:
+#                 wc[w]+=1
+#             else:
+#                 wc[w]=1
+#         return Response({"count":wc})
+# class ArmstrongView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         n=int(request.data.get("n"))
+#         count=0
+#         s=0
+#         num=num1=n
+#         res=""
+#         while n>0:
+#             d=n%10
+#             count=count+1
+#             n=n//10
+#         while num>0:
+#             d=n%10
+#             s=s+d**count
+#             n=num//10
+#         if num1==s:
+#             res="arm"
+#         else:
+#             res='not armstrong'
+#         return Response({"result":res})
+# class PaliandromeView(APIView):
+#     def post(self,request,*args,**kwargs):
+#         s=request.data.get("txt")
+#         s1=s[::-1]
+#         res=''
+#         if s1 == s:
+#             res='it is palindrome'
+#         else:
+#             res='not palindrome'
+#         return Response({"result":res})
 
 class ProductsView(APIView):
     def get(self,request,*args,**kwargs):
@@ -95,11 +95,22 @@ class ProductsView(APIView):
 
 
     def post(self,request,*args,**kwargs):
-        bname=request.data.get("name")
-        bauthor=request.data.get("author")
-        bprice=request.data.get("price")
-        bpublisher=request.data.get("publisher")
-        Books.objects.create(name=bname,author=bauthor,price=bprice,publisher=bpublisher)
-        return Response(data="created")
+       serializer=BookSerializer(data=request.data)
+       if serializer.is_valid():
+           Books.objects.create(**serializer.validated_data)
+           return Response(data=serializer.data)
+       else:
+           return Response(data=serializer.errors)
 
+
+class ProductDetailView(APIView):
+    def get(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        book=Books.objects.get(id=id)
+        serializer=BookSerializer(book,many=False)
+        return Response(data=serializer.data)
+    def delete(self,request,*arg,**kwargs):
+        id=kwargs.get("id")
+        Books.objects.get(id=id).delete()
+        return Response(data="deleted")
 
