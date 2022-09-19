@@ -3,8 +3,8 @@ from django.shortcuts import render
 # # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Books
-from api.serializers import BookSerializer
+from api.models import Books,Reviews
+from api.serializers import BookSerializer,ReviewSerializer
 # class ProductView(APIView):
 #     def get(self,request,*args,**kwargs):
 #         return Response({"msg":"inside products get"})
@@ -113,4 +113,29 @@ class ProductDetailView(APIView):
         id=kwargs.get("id")
         Books.objects.get(id=id).delete()
         return Response(data="deleted")
+    def put(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        serializer=BookSerializer(data=request.data)
+        if serializer.is_valid():
+            Books.objects.filter(id=id).update(**serializer.validated_data)
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+
+
+class ReviewView(APIView):
+    def get(self,request,*args,**kwargs):
+        reviews=Reviews.objects.all()
+        serialiser=ReviewSerializer(reviews,many=True)
+        return Response(data=serialiser.data)
+
+    def post(self,request,*args,**kwargs):
+        serializer=ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+
+
 
