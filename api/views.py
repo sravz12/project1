@@ -137,5 +137,26 @@ class ReviewView(APIView):
         else:
             return Response(data=serializer.errors)
 
+class ReviewDetailsView(APIView):
+    def get(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        qs=Reviews.objects.get(id=id)
+        serializer=ReviewSerializer(qs,many=False)
+        return Response(data=serializer.data)
+    def put(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        object=Reviews.objects.get(id=id)
+        serializer=ReviewSerializer(instance=object,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+    def delete(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        Reviews.objects.get(id=id).delete()
+        return Response(data="deleted")
+
+
 
 

@@ -40,7 +40,23 @@ data=Books.objects.all().exclude(price=300)
 delete
 ------
 
+#command
+create a new project
+   django-admin startproject projectname
+creatin a new app
+   python manage.py startapp appname
 
+development server start
+   python manage.py runserver
+
+applying migration
+   python manage.py makemigrations
+
+apply change to db table
+   python manage.py migrate
+
+runnig app in different portnumber
+   python manage.py runserver 8002
 
 
 
