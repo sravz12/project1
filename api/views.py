@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Books,Reviews
 from api.serializers import BookSerializer,ReviewSerializer
+from rest_framework.viewsets import ViewSet,ModelViewSet
+
 # class ProductView(APIView):
 #     def get(self,request,*args,**kwargs):
 #         return Response({"msg":"inside products get"})
@@ -157,6 +159,41 @@ class ReviewDetailsView(APIView):
         Reviews.objects.get(id=id).delete()
         return Response(data="deleted")
 
+class ProductviewsetView(ViewSet):
+    def list(self,request,*args,**kwargs):
+        qs=Books.objects.all()
+        serializer=BookSerializer(qs,many=True)
+        return Response(data=serializer.data)
+    def create(self,request,*args,**kwargs):
+        serializer=BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+    def retrieve(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        book=Books.objects.get(id=id)
+        serializer=BookSerializer(book,many=False)
+        return Response(data=serializer.data)
+    def update(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        book=Books.objects.get(id=id)
+        serializer=BookSerializer(instance=book,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+    def destroy(self,request,*arg,**kwargs):
+        id=kwargs.get("pk")
+        Books.objects.get(id=id).delete()
+        return Response(data="deleted")
 
+class ProductModelViewsetView(ModelViewSet):
+    serializer_class = BookSerializer
+    queryset = Books.objects.all()
 
-
+class ReviewModelViewsetView(ModelViewSet):
+    serializer_class = ReviewSerializer
+    queryset = Reviews.objects.all()
