@@ -7,6 +7,7 @@ from api.models import Books,Reviews
 from api.serializers import BookSerializer,ReviewSerializer,UserSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from django.contrib.auth.models import User
+from rest_framework import authentication,permissions
 
 # class ProductView(APIView):
 #     def get(self,request,*args,**kwargs):
@@ -161,6 +162,11 @@ class ReviewDetailsView(APIView):
         return Response(data="deleted")
 
 class ProductviewsetView(ViewSet):
+    authentication_classes = [authentication.BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+
+
     def list(self,request,*args,**kwargs):
         qs=Books.objects.all()
         serializer=BookSerializer(qs,many=True)

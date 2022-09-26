@@ -1,0 +1,26 @@
+authentication and permission
+---------------------------------
+
+Basic authentication -> username passwrd                                          ( usernamr:admin,pass:admin)
+Token authentication
+JWT
+
+Permissions
+-----------
+
+Isauthenticated
+
+IsAdmin User
+
+AllowAny
+
+IsAuthenticatedOrReadonly
+
+Model Relationship
+------------------
+one to one
+one to many
+many to many
+
+
+

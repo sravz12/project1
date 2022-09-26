@@ -63,6 +63,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields=["first_name","last_name","username","email","password"]
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        return User.objects.create_user(**validated_data) #password encrypting method
 
 
