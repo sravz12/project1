@@ -59,5 +59,9 @@ runnig app in different portnumber
    python manage.py runserver 8002
 
 
+parent_ref.childparentname_set.all()
+
+
+
 
 

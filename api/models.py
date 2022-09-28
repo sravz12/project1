@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Books(models.Model):
     name=models.CharField(max_length=100)
@@ -10,12 +11,19 @@ class Books(models.Model):
     def __str__(self):
         return self.name
 
+# class Reviews(models.Model):
+#     book=models.CharField(max_length=120)
+#     user=models.CharField(max_length=100)
+#     comment=models.CharField(max_length=200)
+#     rating=models.PositiveIntegerField()
+#     created_date=models.DateTimeField(auto_now_add=True)
+
 class Reviews(models.Model):
-    book=models.CharField(max_length=120)
-    user=models.CharField(max_length=100)
-    comment=models.CharField(max_length=200)
-    rating=models.PositiveIntegerField()
-    created_date=models.DateTimeField(auto_now_add=True)
+    book = models.ForeignKey(Books,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    comment = models.CharField(max_length=200)
+    rating = models.PositiveIntegerField()
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.comment
