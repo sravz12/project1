@@ -62,6 +62,14 @@ runnig app in different portnumber
 parent_ref.childparentname_set.all()
 
 
+api for adding a review
+------------------------
+localhost:/8000/api/v1/products/1/add_review/
+method:post
+
+custom method in viewset and modelviewset
+-----------------------------------------
+
 
 
 
