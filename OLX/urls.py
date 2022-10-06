@@ -18,6 +18,7 @@ from django.urls import path
 # from api.views import ProductView,MorningView,AddView,MulView
 from api.views import ProductsView,ProductDetailView,ReviewView,ReviewDetailsView,ProductviewsetView,ProductModelViewsetView,ReviewModelViewsetView,UsersView
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import ObtainAuthToken
 router=DefaultRouter()
 router.register("api/v1/products",ProductviewsetView,basename="products")
 router.register("api/v2/products",ProductModelViewsetView,basename="books")
@@ -36,7 +37,8 @@ urlpatterns = [
     path('products',ProductsView.as_view()),
     path('products/<int:id>',ProductDetailView.as_view()),
     path('reviews',ReviewView.as_view()),
-    path('reviews/<int:id>',ReviewDetailsView.as_view())
+    path('reviews/<int:id>',ReviewDetailsView.as_view()),
+    path("token/",ObtainAuthToken.as_view())
 
 
 

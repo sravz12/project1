@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import Reviews
-from api.models import Books
+from api.models import Books,Carts
 from django.contrib.auth.models import User
 class BookSerializer(serializers.Serializer):
     id=serializers.IntegerField(read_only=True)
@@ -64,5 +64,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data) #password encrypting method
+
+class CartSerializer(serializers.ModelSerializer):
+    book = serializers.CharField(read_only=True)
+    user = serializers.CharField(read_only=True)
+    status = serializers.CharField(read_only=True)
+    class Meta:
+        model=Carts
+        fields=["book","user","status"]
 
 

@@ -3,7 +3,7 @@ from django.shortcuts import render
 # # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Books,Reviews
+from api.models import Books,Reviews,Carts
 from api.serializers import BookSerializer,ReviewSerializer,UserSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from django.contrib.auth.models import User
@@ -163,7 +163,7 @@ class ReviewDetailsView(APIView):
         return Response(data="deleted")
 
 class ProductviewsetView(ViewSet):
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
 
@@ -197,6 +197,7 @@ class ProductviewsetView(ViewSet):
         id=kwargs.get("pk")
         Books.objects.get(id=id).delete()
         return Response(data="deleted")
+
     @action(methods=["POST"],detail=True)                                        #custom method
     def add_review(self,request,*args,**kwargs):
         id=kwargs.get("pk")
@@ -207,12 +208,26 @@ class ProductviewsetView(ViewSet):
                                comment=request.data.get("comment"),
                                rating=request.data.get("rating"))
         return Response(data="created")
+
     @action(methods=["GET"],detail=True)
-    def get_review(self,request,*args,**kwargs):
+    def get_review(self,request,*args,**kwargs):                             #localhost:8000/api/v1/product/1/get_review
         id=kwargs.get("pk")
-        book=Reviews.objects.all()
-        serializer=ReviewSerializer(book,many=False)
-        return Response(data=ReviewSerializer.data)
+        book=Books.objects.get(id=id)
+        reviews=book.reviews_set.all()
+        serializer=ReviewSerializer(reviews,many=True)
+        return Response(data=serializer.data)
+
+    @action(methods=["POST"],detail=True)
+    def addto_cart(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        book=Books.objects.get(id=id)
+        Carts.objects.create(book=book,user=request.user,
+                             status=request.data.get("options"))
+        return Response(data="created")
+
+
+
+
 
 
 
